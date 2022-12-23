@@ -1,0 +1,8 @@
+DJANGO_SECRET_KEY=m@_!2!4pzz8=+j6ilb4hplyl6#0&00a8!sw=vdm%(ypu@$#t1z
+DJANGO_DEBUG=Fase
+DB_NAME=oleg-business
+DB_USER=postgres
+DB_PASSWORD=root
+DB_HOST=localhost
+DB_PORT=5432
+SIGNING_KEY=_yg*2w_rxplyrnf2-mdw#s62f6pyoo8b&yul&z0ni7)te=(dmn
