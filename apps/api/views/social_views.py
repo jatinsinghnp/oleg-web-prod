@@ -32,6 +32,7 @@ class UserSocialView(APIView):
         serilizer = UserSociallinkSerilizer(user_social_link, many=True)
         return Response(serilizer.data, status=status.HTTP_200_OK)
 
+    @swagger_auto_schema(request_body=UserSociallinkSerilizer)
     def post(self, request):
         serlizer = UserSociallinkSerilizer(data=request.data)
         currentprofileid = request.user.id
@@ -49,6 +50,7 @@ class UserSocialView(APIView):
 
         return Response(serlizer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    @swagger_auto_schema(request_body=UserSociallinkSerilizer)
     def delete(self, request, id):
         try:
 
@@ -72,4 +74,6 @@ class UserSocialLinkUpdate(UpdateAPIView):
 
     def perform_update(self, serializer):
         return super().perform_update(serializer)
-UserSocialLinkUpdate=UserSocialLinkUpdate.as_view()
+
+
+UserSocialLinkUpdate = UserSocialLinkUpdate.as_view()
