@@ -29,7 +29,9 @@ class UserSocialView(APIView):
     @swagger_auto_schema(responses={200: UserSociallinkSerilizer})
     def get(self, request):
         user_social_link = UserSocialLinks.objects.filter(userprofile=request.user.id)
-        serilizer = UserSociallinkSerilizer(user_social_link, many=True)
+        serilizer = UserSociallinkSerilizer(
+            user_social_link, context={"request": request}, many=True
+        )
         return Response(serilizer.data, status=status.HTTP_200_OK)
 
     @swagger_auto_schema(request_body=UserSociallinkSerilizer)

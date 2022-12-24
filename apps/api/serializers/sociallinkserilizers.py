@@ -1,5 +1,5 @@
 from apps.social.models import SocialLinks, UserSocialLinks, Qrcode
-from rest_framework.serializers import ModelSerializer, StringRelatedField
+from rest_framework.serializers import ModelSerializer
 
 
 class SocialLinksSerilizer(ModelSerializer):
@@ -12,7 +12,7 @@ class SocialLinksSerilizer(ModelSerializer):
 class UserSociallinkSerilizer(ModelSerializer):
     class Meta:
         model = UserSocialLinks
-        fields = ("sociallinks", "userprofile", "profile_links")
+        fields = ["sociallinks", "userprofile", "profile_links"]
         depth = 1
 
 

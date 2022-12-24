@@ -44,7 +44,6 @@ class UpdateProfileAPIView(APIView):
             raise NotFound("this is not your profile")
 
         user_mail = request.user.email
-        print(user_mail)
         if user_mail != user_email:
             return Response(
                 {"msg": "you are not authorized"}, status=status.HTTP_401_UNAUTHORIZED
