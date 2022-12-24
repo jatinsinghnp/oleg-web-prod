@@ -7,7 +7,10 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import NotFound
 from ...social.models import SocialLinks, UserSocialLinks, Qrcode
 from drf_yasg.utils import swagger_auto_schema
-from ...api.serializers.sociallinkserilizers import UserSociallinkSerilizer, QrSerilizerprofile
+from ...api.serializers.sociallinkserilizers import (
+    UserSociallinkSerilizer,
+    QrSerilizerprofile,
+)
 
 
 class ProfilePageView(APIView):
@@ -15,18 +18,26 @@ class ProfilePageView(APIView):
 
     @swagger_auto_schema(responses={200: ProfileSerilizer(many=True)})
     def get(self, request):
+
+        serilizers = {}
         profile = Profile.objects.get(user=request.user.id)
         usersocial = UserSocialLinks.objects.filter(userprofile=profile)
         defualtqr = Qrcode.objects.get(userprofile=profile)
-        defaultqrserilizer = QrSerilizerprofile(defualtqr,context={"request": request})
+        try:
+            defaultqrserilizer = QrSerilizerprofile(
+                defualtqr, context={"request": request}
+            )
+            serilizers["qr"] = defaultqrserilizer.data
+        except:
+            serilizers["qr"] = "select QR"
+
         usersocialserilizer = UserSociallinkSerilizer(usersocial, many=True)
-        serilizer = ProfileSerilizer(profile, context={"request": request})
+        serilizers["userlink"] = usersocialserilizer.data
+        profileerilizer = ProfileSerilizer(profile, context={"request": request})
+        serilizers["profile"] = profileerilizer.data
+
         return Response(
-            {
-                "profile": serilizer.data,
-                "userlink": usersocialserilizer.data,
-                "qr": defaultqrserilizer.data,
-            },
+            serilizers,
             status=status.HTTP_200_OK,
         )
 
@@ -38,6 +49,7 @@ class UpdateProfileAPIView(APIView):
     permission_classes = [IsAuthenticated]
     queryset = Profile.objects.select_related("user")
     serializer_class = UpdateProfileSerializer
+
     @swagger_auto_schema(
         operation_description="updateprofile", responses={200: UpdateProfileSerializer}
     )
