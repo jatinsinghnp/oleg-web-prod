@@ -10,11 +10,11 @@ class Connections(TimeStampedUUIDModel):
         Profile, related_name="connection_profile", on_delete=models.CASCADE
     )
     peroson_name = models.CharField(max_length=500)
-    Email = models.EmailField()
-    phone_number = PhoneNumberField(blank=True)
-    job_title = models.CharField(max_length=200, blank=True)
-    company_name = models.CharField(max_length=200, blank=True)
-    Add_note = models.TextField(blank=True)
+    Email = models.EmailField(blank=True,null=True)
+    phone_number = PhoneNumberField(blank=True,null=True)
+    job_title = models.CharField(max_length=200, blank=True,null=True)
+    company_name = models.CharField(max_length=200,blank=True,null=True)
+    Add_note = models.TextField(blank=True,null=True)
 
     def __str__(self) -> str:
         return self.peroson_name
