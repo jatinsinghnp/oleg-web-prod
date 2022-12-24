@@ -5,9 +5,9 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import NotFound
-from ...social.models import SocialLinks, UserSocialLinks
+from ...social.models import SocialLinks, UserSocialLinks, Qrcode
 from drf_yasg.utils import swagger_auto_schema
-from ...api.serializers.sociallinkserilizers import UserSociallinkSerilizer
+from ...api.serializers.sociallinkserilizers import UserSociallinkSerilizer, QrSerilizerprofile
 
 
 class ProfilePageView(APIView):
@@ -17,13 +17,16 @@ class ProfilePageView(APIView):
     def get(self, request):
         profile = Profile.objects.get(user=request.user.id)
         usersocial = UserSocialLinks.objects.filter(userprofile=profile)
-        usersocialserilizer = UserSociallinkSerilizer(
-            usersocial, many=True, context={"request": request}
-        )
+        defualtqr = Qrcode.objects.get(userprofile=profile)
+        defaultqrserilizer = QrSerilizerprofile(defualtqr,context={"request": request})
+        usersocialserilizer = UserSociallinkSerilizer(usersocial, many=True)
         serilizer = ProfileSerilizer(profile, context={"request": request})
-
         return Response(
-            {"profile": serilizer.data, "userlink": usersocialserilizer.data},
+            {
+                "profile": serilizer.data,
+                "userlink": usersocialserilizer.data,
+                "qr": defaultqrserilizer.data,
+            },
             status=status.HTTP_200_OK,
         )
 
@@ -35,7 +38,6 @@ class UpdateProfileAPIView(APIView):
     permission_classes = [IsAuthenticated]
     queryset = Profile.objects.select_related("user")
     serializer_class = UpdateProfileSerializer
-
     @swagger_auto_schema(
         operation_description="updateprofile", responses={200: UpdateProfileSerializer}
     )

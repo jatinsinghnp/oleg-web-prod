@@ -1,7 +1,5 @@
 from ...profiles.models import Profile
-from rest_framework.serializers import ModelSerializer, PrimaryKeyRelatedField
-from ...api.serializers.sociallinkserilizers import UserSociallinkSerilizer
-
+from rest_framework.serializers import ModelSerializer
 
 class ProfileSerilizer(ModelSerializer):
     class Meta:

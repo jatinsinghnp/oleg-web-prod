@@ -9,12 +9,18 @@ class SocialLinksSerilizer(ModelSerializer):
         depth = 1
 
 
+class SocialLinksSerilizerForUserSociallinkSerilizer(ModelSerializer):
+    class Meta:
+        model = SocialLinks
+        fields = ["id", "name", "social_links_images"]
+
+
 class UserSociallinkSerilizer(ModelSerializer):
+    sociallinks = SocialLinksSerilizerForUserSociallinkSerilizer(read_only=True)
+
     class Meta:
         model = UserSocialLinks
         fields = ["sociallinks", "userprofile", "profile_links"]
-       
-        
 
 
 class UpdateUserSocialSerilizer(ModelSerializer):
@@ -27,3 +33,9 @@ class QrSerilizer(ModelSerializer):
     class Meta:
         model = Qrcode
         fields = ["userprofile", "usersociallink"]
+
+
+class QrSerilizerprofile(ModelSerializer):
+    class Meta:
+        model = Qrcode
+        fields = ["id","profile_qr","usersociallink","userprofile"]
