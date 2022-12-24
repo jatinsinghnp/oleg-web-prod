@@ -14,17 +14,26 @@ class QrCodeView(APIView):
 
     @swagger_auto_schema(responses={200: QrSerilizer(many=True)})
     def get(self, request):
-        profile = Profile.objects.get(user=request.user.id)
-        qr = Qrcode.objects.get(userprofile=profile)
+        try:
+            profile = Profile.objects.get(user=request.user.id)
+            qr = Qrcode.objects.get(userprofile=profile)
+        except:
+            return Response({"error":"you are not authorized"})
         serilizer = self.serializer_class(qr)
         return Response(serilizer.data, status=status.HTTP_200_OK)
 
     @swagger_auto_schema(request_body=QrSerilizer)
     def post(self, request):
         serilizer = self.serializer_class(data=request.data)
-        qruser = UserSocialLinks.objects.filter(userprofile=request.user.id)
-        currentuser = request.user.id
-        qruser = qruser[0].userprofile.id
+        try:
+            qruser = UserSocialLinks.objects.filter(userprofile=request.user.id)
+            currentuser = request.user.id
+            qruser = qruser[0].userprofile.id
+        except:
+            return Response(
+                {"error": "you need to have at leat one user socail link  "},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
         if currentuser == qruser:
             if serilizer.is_valid():
                 serilizer.save()
@@ -34,7 +43,6 @@ class QrCodeView(APIView):
                 {"msg": "user id do't match"}, status=status.HTTP_401_UNAUTHORIZED
             )
         return Response(serilizer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 
 
 QrCodeView = QrCodeView.as_view()
