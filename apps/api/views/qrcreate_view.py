@@ -17,8 +17,8 @@ class QrCodeView(APIView):
         try:
             profile = Profile.objects.get(user=request.user.id)
             qr = Qrcode.objects.get(userprofile=profile)
-        except:
-            return Response({"error":"you are not authorized"})
+        except Exception as e :
+            return Response({"error":e})
         serilizer = self.serializer_class(qr)
         return Response(serilizer.data, status=status.HTTP_200_OK)
 
