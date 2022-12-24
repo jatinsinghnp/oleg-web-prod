@@ -7,6 +7,7 @@ class ProfileSerilizer(ModelSerializer):
     class Meta:
         model = Profile
         fields = "__all__"
+        depth=1
 
 
 class UpdateProfileSerializer(ModelSerializer):
@@ -14,3 +15,5 @@ class UpdateProfileSerializer(ModelSerializer):
         model = Profile
         fields = ["gender", "bio", "picture", "name"]
        
+       
+
