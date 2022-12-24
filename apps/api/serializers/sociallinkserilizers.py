@@ -13,7 +13,8 @@ class UserSociallinkSerilizer(ModelSerializer):
     class Meta:
         model = UserSocialLinks
         fields = ["sociallinks", "userprofile", "profile_links"]
-    
+        depth=1
+        
 
 
 class UpdateUserSocialSerilizer(ModelSerializer):
