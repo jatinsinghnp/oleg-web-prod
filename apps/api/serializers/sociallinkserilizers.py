@@ -6,8 +6,6 @@ class SocialLinksSerilizer(ModelSerializer):
     class Meta:
         model = SocialLinks
         fields = "__all__"
-        depth = 1
-
 
 class SocialLinksSerilizerForUserSociallinkSerilizer(ModelSerializer):
     class Meta:
