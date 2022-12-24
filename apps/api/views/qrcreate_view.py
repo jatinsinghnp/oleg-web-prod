@@ -6,6 +6,7 @@ from ...api.serializers.sociallinkserilizers import QrSerilizer, UserSocialLinks
 from ...profiles.models import Profile
 from rest_framework.permissions import IsAuthenticated
 from drf_yasg.utils import swagger_auto_schema
+from django.core.exceptions import ObjectDoesNotExist
 
 
 class QrCodeView(APIView):
@@ -17,8 +18,8 @@ class QrCodeView(APIView):
         try:
             profile = Profile.objects.get(user=request.user.id)
             qr = Qrcode.objects.get(userprofile=profile)
-        except Exception as e :
-            return Response({"error":e})
+        except ObjectDoesNotExist:
+            return Response({"error":"you dont't have any data "})
         serilizer = self.serializer_class(qr)
         return Response(serilizer.data, status=status.HTTP_200_OK)
 
