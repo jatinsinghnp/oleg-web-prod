@@ -19,7 +19,7 @@ class QrCodeView(APIView):
             profile = Profile.objects.get(user=request.user.id)
             qr = Qrcode.objects.get(userprofile=profile)
         except ObjectDoesNotExist:
-            return Response({"error":"you dont't have any data "})
+            return Response({"error":"you don't have any data "})
         serilizer = self.serializer_class(qr)
         return Response(serilizer.data, status=status.HTTP_200_OK)
 
@@ -41,7 +41,7 @@ class QrCodeView(APIView):
                 return Response(serilizer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(
-                {"msg": "user id do't match"}, status=status.HTTP_401_UNAUTHORIZED
+                {"msg": "user id don't match"}, status=status.HTTP_401_UNAUTHORIZED
             )
         return Response(serilizer.errors, status=status.HTTP_400_BAD_REQUEST)
 
