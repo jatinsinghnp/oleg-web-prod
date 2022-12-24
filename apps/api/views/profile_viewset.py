@@ -17,7 +17,9 @@ class ProfilePageView(APIView):
     def get(self, request):
         profile = Profile.objects.get(user=request.user.id)
         usersocial = UserSocialLinks.objects.filter(userprofile=profile)
-        usersocialserilizer = UserSociallinkSerilizer(usersocial, many=True)
+        usersocialserilizer = UserSociallinkSerilizer(
+            usersocial, many=True, context={"request": request}
+        )
         serilizer = ProfileSerilizer(profile, context={"request": request})
 
         return Response(
