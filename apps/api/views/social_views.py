@@ -16,7 +16,7 @@ class SocialView(APIView):
     @swagger_auto_schema(responses={200: SocialLinksSerilizer(many=True)})
     def get(self, request):
         socail_link = SocialLinks.objects.all()
-        serilizer = SocialLinksSerilizer(socail_link, many=True)
+        serilizer = SocialLinksSerilizer(socail_link, many=True,context={"request": request})
         return Response(serilizer.data, status=status.HTTP_200_OK)
 
 
@@ -30,7 +30,7 @@ class UserSocialView(APIView):
     def get(self, request):
         user_social_link = UserSocialLinks.objects.filter(userprofile=request.user.id)
         serilizer = UserSociallinkSerilizer(
-            user_social_link, context={"request": request}, many=True
+            user_social_link,context={"request": request}, many=True 
         )
         return Response(serilizer.data, status=status.HTTP_200_OK)
 
