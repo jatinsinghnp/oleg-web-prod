@@ -2,7 +2,6 @@ from rest_framework.response import Response
 from ...products.models import Product
 from ...api.serializers.product_serilizer import ProductSerilizer
 from rest_framework.generics import ListAPIView
-
 class ProductListApiView(ListAPIView):
     
     model = Product
@@ -11,3 +10,5 @@ class ProductListApiView(ListAPIView):
 
 
 ProductListApiView = ProductListApiView.as_view()
+
+
